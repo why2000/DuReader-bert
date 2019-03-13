@@ -373,14 +373,18 @@ def convert_examples_to_features(examples, tokenizer, max_seq_length,
             tok_start_position = -1
             tok_end_position = -1
         if is_training and not example.is_impossible:
-            tok_start_position = orig_to_tok_index[example.start_position]
-            if example.end_position < len(example.doc_tokens) - 1:
-                tok_end_position = orig_to_tok_index[example.end_position + 1] - 1
-            else:
-                tok_end_position = len(all_doc_tokens) - 1
-            (tok_start_position, tok_end_position) = _improve_answer_span(
-                all_doc_tokens, tok_start_position, tok_end_position, tokenizer,
-                example.orig_answer_text)
+            try:
+                tok_start_position = orig_to_tok_index[example.start_position]
+                if example.end_position < len(example.doc_tokens) - 1:
+                    tok_end_position = orig_to_tok_index[example.end_position + 1] - 1
+                else:
+                    tok_end_position = len(all_doc_tokens) - 1
+                (tok_start_position, tok_end_position) = _improve_answer_span(
+                    all_doc_tokens, tok_start_position, tok_end_position, tokenizer,
+                    example.orig_answer_text)
+            except:
+                tok_start_position = -1
+                tok_end_position = -1
 
         # The -3 accounts for [CLS], [SEP] and [SEP]
         max_tokens_for_doc = max_seq_length - len(query_tokens) - 3

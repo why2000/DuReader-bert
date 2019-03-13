@@ -287,6 +287,8 @@ def read_dureader(input_file, is_training):
     DuReaderList = []
     with tf.gfile.Open(input_file, "r") as reader:
         for lidx, line in enumerate(reader):
+            if(lidx % 1000 == 0):
+                print(lidx)
             sample = json.loads(line.strip())
 
             if len(sample['answer_docs']) == 0:

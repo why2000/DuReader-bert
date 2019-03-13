@@ -59,7 +59,7 @@ flags.DEFINE_string("train_file", str(os.path.join(curdir, "DuReader/preprocesse
                     "SQuAD json for training. E.g., train-v1.1.json")
 
 flags.DEFINE_string(
-    "predict_file", curdir + "DuReader/preprocessed/zhidao.dev.json",
+    "predict_file", str(os.path.join(curdir, "DuReader/preprocessed/zhidao.dev.json")),
     "SQuAD json for predictions. E.g., dev-v1.1.json or test-v1.1.json")
 
 # flags.DEFINE_string(
@@ -67,7 +67,7 @@ flags.DEFINE_string(
 #     "SQuAD json for predictions. E.g., dev-v1.1.json or test-v1.1.json")
 
 flags.DEFINE_string(
-    "init_checkpoint", str(os.path.join(curdir, "bert_model.ckpt")),
+    "init_checkpoint", str(os.path.join(BERT_BASE_DIR, "bert_model.ckpt")),
     "Initial checkpoint (usually from a pre-trained BERT model).")
 
 flags.DEFINE_bool(
@@ -469,7 +469,7 @@ def convert_examples_to_features(examples, tokenizer, max_seq_length,
                 start_position = 0
                 end_position = 0
 
-            if example_index < 20:
+            if example_index < 5:
                 tf.logging.info("*** Example ***")
                 tf.logging.info("unique_id: %s" % (unique_id))
                 tf.logging.info("example_index: %s" % (example_index))

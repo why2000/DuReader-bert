@@ -35,7 +35,7 @@ curdir = os.path.dirname(os.path.abspath(__file__)).replace('\\', '/')
 prvdir = os.path.dirname(os.path.dirname(os.path.abspath(__file__))).replace('\\', '/')
 sys.path.insert(0, os.path.dirname(curdir))
 
-BERT_BASE_DIR = curdir + "/model/chinese_L-12_H-768_A-12/"
+BERT_BASE_DIR = curdir + "/model/chinese_L-12_H-768_A-12"
 
 flags = tf.flags
 
@@ -43,19 +43,19 @@ FLAGS = flags.FLAGS
 
 # Required parameters
 flags.DEFINE_string(
-    "bert_config_file", BERT_BASE_DIR + "/bert_config.json",
+    "bert_config_file", os.path.join(BERT_BASE_DIR, "/bert_config.json"),
     "The config json file corresponding to the pre-trained BERT model. "
     "This specifies the model architecture.")
 
-flags.DEFINE_string("vocab_file", BERT_BASE_DIR + "/vocab.txt",
+flags.DEFINE_string("vocab_file", os.path.join(BERT_BASE_DIR, "/vocab.txt"),
                     "The vocabulary file that the BERT model was trained on.")
 
 flags.DEFINE_string(
-    "output_dir", curdir + '/result/',
+    "output_dir", os.path.join(curdir, '/result/'),
     "The output directory where the model checkpoints will be written.")
 
 # Other parameters
-flags.DEFINE_string("train_file", curdir + "/DuReader/preprocessed/zhidao.train.json",
+flags.DEFINE_string("train_file", os.path.join(curdir, "/DuReader/preprocessed/zhidao.train.json"),
                     "SQuAD json for training. E.g., train-v1.1.json")
 
 # flags.DEFINE_string(
@@ -63,11 +63,11 @@ flags.DEFINE_string("train_file", curdir + "/DuReader/preprocessed/zhidao.train.
 #     "SQuAD json for predictions. E.g., dev-v1.1.json or test-v1.1.json")
 
 flags.DEFINE_string(
-    "predict_file", curdir + "/data/wait_answer.json",
+    "predict_file", os.path.join(curdir, "/data/wait_answer.json"),
     "SQuAD json for predictions. E.g., dev-v1.1.json or test-v1.1.json")
 
 flags.DEFINE_string(
-    "init_checkpoint", BERT_BASE_DIR + "/bert_model.ckpt",
+    "init_checkpoint", os.path.join(curdir, "/bert_model.ckpt"),
     "Initial checkpoint (usually from a pre-trained BERT model).")
 
 flags.DEFINE_bool(
@@ -287,7 +287,7 @@ def read_dureader(input_file, is_training):
     DuReaderList = []
     with tf.gfile.Open(input_file, "r") as reader:
         for lidx, line in enumerate(reader):
-            if(lidx % 1000 == 0):
+            if lidx % 1000 == 0:
                 print(lidx)
             sample = json.loads(line.strip())
 
@@ -494,6 +494,8 @@ def convert_examples_to_features(examples, tokenizer, max_seq_length,
                     tf.logging.info("end_position: %d" % (end_position))
                     tf.logging.info(
                         "answer: %s" % (tokenization.printable_text(answer_text)))
+            if example_index % 1000 == 0:
+                print(example_index)
 
             feature = InputFeatures(
                 unique_id=unique_id,

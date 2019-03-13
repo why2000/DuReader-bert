@@ -304,10 +304,7 @@ def read_dureader(input_file, is_training):
                 answer_docs = sample['answer_docs'][0]
                 most_related_documents = sample['documents'][answer_docs]
             except:
-                print("exceptfound")
-                print(answer_docs)
-                print(sample)
-                print("exceptend")
+                continue
             most_related_para_id = most_related_documents['most_related_para']
             most_related_para_seg = most_related_documents['segmented_paragraphs'][most_related_para_id]
             doc_tokens = most_related_para_seg

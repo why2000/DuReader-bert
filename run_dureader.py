@@ -59,7 +59,7 @@ flags.DEFINE_string("train_file", str(os.path.join(curdir, "DuReader/preprocesse
                     "SQuAD json for training. E.g., train-v1.1.json")
 
 flags.DEFINE_string(
-    "predict_file", str(os.path.join(curdir, "DuReader/preprocessed/zhidao.dev.json")),
+    "predict_file", str(os.path.join(curdir, "DuReader/preprocessed/data_dev_preprocessed.json")),
     "SQuAD json for predictions. E.g., dev-v1.1.json or test-v1.1.json")
 
 # flags.DEFINE_string(
